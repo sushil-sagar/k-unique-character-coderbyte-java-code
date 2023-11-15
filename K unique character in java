@@ -1,0 +1,42 @@
+import java.util.*;
+
+class Main {
+
+public static String KUniqueCharacters(String str) {
+int k = Character.getNumericValue(str.charAt(0));
+str = str.substring(1);
+
+int maxLength = 0;
+int start = 0;
+
+Map<Character, Integer> charMap = new HashMap<>();
+
+int windowStart = 0;
+for (int windowEnd = 0; windowEnd < str.length(); windowEnd++) {
+char currentChar = str.charAt(windowEnd);
+charMap.put(currentChar, charMap.getOrDefault(currentChar, 0) + 1);
+
+while (charMap.size() > k) {
+char leftChar = str.charAt(windowStart);
+charMap.put(leftChar, charMap.get(leftChar) - 1);
+if (charMap.get(leftChar) == 0) {
+charMap.remove(leftChar);
+}
+windowStart++;
+}
+
+if (windowEnd - windowStart + 1 > maxLength) {
+maxLength = windowEnd - windowStart + 1;
+start = windowStart;
+}
+}
+
+return str.substring(start, start + maxLength);
+}
+
+public static void main(String[] args) {
+Scanner s = new Scanner(System.in);
+System.out.print(KUniqueCharacters(s.nextLine()));
+s.close();
+}
+}
